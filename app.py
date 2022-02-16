@@ -49,6 +49,13 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
         indice = indice + 1
     return distancias
 
+@app.after_request
+def after_request(response):
+  response.headers.set('Access-Control-Allow-Origin', '*')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  return response 
+
 @app.route("/grafica", methods=["POST"])
 def grafica():
     data = request.get_json()
@@ -58,6 +65,7 @@ def grafica():
     ubicaciones = data["locations"]
     respuesta = distanciaPuntos(puntos, pesos, ubicaciones)
     return respuesta
+
 
 
 

@@ -8,22 +8,39 @@ CORS(app)
 def distanciaPuntos(puntos, pesos, ubicaciones):
     distancias = {}
     indice = 0
+    division_entre_cero = False
+    w1_negativo = False
+    w2_negativo = False
     for elemento in puntos:
         yRecta = float(pesos["w1"]) * float(elemento["offsetX"]) + float(pesos["w2"]) * float(elemento["offsetX"])
+
+        if float(pesos["w1"]) or float(pesos["w2"])< 0:
+            w1_negativo = True
 
         #15 = .5x + 2x
         if float(pesos["w1"]) == 0 and float(pesos["w2"]) == 0:
             xRecta = 0
+            division_entre_cero = True
         else:
-            xRecta = float(elemento["offsetY"]) / (float(pesos["w1"]) + float(pesos["w2"]))
+            try:
+                xRecta = float(elemento["offsetY"]) / (float(pesos["w1"]) + float(pesos["w2"]))
+            except:
+                xRecta = 0   
                 
         fuera = 1
         print("X dada: " + str(float(elemento["offsetX"])) + " Y dada: " + str(float(elemento["offsetY"])))
         print("X: " + str(xRecta) + " Y: " + str(yRecta))
 
         #and yRecta >= float(elemento["offsetY"])
-        if xRecta <= float(elemento["offsetX"]) and yRecta >= float(elemento["offsetY"]):
+        if division_entre_cero and yRecta >= float(elemento["offsetY"]):
             fuera = -1
+
+        elif xRecta <= float(elemento["offsetX"]) and yRecta >= float(elemento["offsetY"]) and not w1_negativo:
+            fuera = -1
+        
+        elif w1_negativo and  yRecta <= float(elemento["offsetY"]):
+            fuera = -1
+
         
         #(Ax + Bx + C / sqrt(A^2 + B^2))
         # resultado = (float(pesos["w1"]) * float(elemento["offsetX"]) + float(pesos["w2"]) * float(elemento["offsetY"])) / (math.sqrt(math.pow(float(pesos["w1"]), 2) + math.pow(float(pesos["w2"]), 2)))

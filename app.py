@@ -1,10 +1,10 @@
 import math
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response, make_response
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
-app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app)
+
 
 def distanciaPuntos(puntos, pesos, ubicaciones):
     distancias = {}
@@ -45,15 +45,10 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
         indice = indice + 1
     return distancias
 
-@app.after_request
-def after_request(response):
-  response.headers.set('Access-Control-Allow-Origin', '*')
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   
 
 @app.route("/grafica", methods=["POST"])
-@cross_origin()
+
 def grafica():
     data = request.get_json()
     xValues = data["xValues"]
@@ -61,11 +56,9 @@ def grafica():
     pesos = data["w"]
     ubicaciones = data["locations"]
     respuesta = distanciaPuntos(puntos, pesos, ubicaciones)
-    response_flask  = jsonify(respuesta)
-    response_flask.headers.add('Access-Control-Allow-Origin', '*')
-    response_flask.headers.set('Access-Control-Allow-Origin', '*')
-    response_flask.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response_flask.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response_flask  = make_response(respuesta)
+    response_flask.headers['Access-Control-Allow-Origin'] = '*'
+    print(response_flask.headers['Access-Control-Allow-Origin'])
     return response_flask
     
 
@@ -73,5 +66,5 @@ def grafica():
 
 
 if __name__ == "__main__":
-    app.run(port = 5000, debug = False)
+    app.run(port = 5000, debug = True)
 

@@ -48,10 +48,8 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
   
 
 @app.route("/grafica", methods=["POST"])
-
 def grafica():
     data = request.get_json()
-    xValues = data["xValues"]
     puntos = data["points"]
     pesos = data["w"]
     ubicaciones = data["locations"]

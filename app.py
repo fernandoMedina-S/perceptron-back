@@ -53,7 +53,7 @@ def after_request(response):
   
 
 @app.route("/grafica", methods=["POST"])
-@cross_origin(origin='*',headers=['Content- Type','Authorization'])
+@cross_origin()
 def grafica():
     data = request.get_json()
     xValues = data["xValues"]
@@ -63,6 +63,9 @@ def grafica():
     respuesta = distanciaPuntos(puntos, pesos, ubicaciones)
     response_flask  = jsonify(respuesta)
     response_flask.headers.add('Access-Control-Allow-Origin', '*')
+    response_flask.headers.set('Access-Control-Allow-Origin', '*')
+    response_flask.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response_flask.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response_flask
     
 

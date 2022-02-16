@@ -50,12 +50,10 @@ def after_request(response):
   response.headers.set('Access-Control-Allow-Origin', '*')
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
   response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  response_flask  = jsonify(response)
-  response_flask.headers.add('Access-Control-Allow-Origin', '*')
-  return response_flask
+  
 
 @app.route("/grafica", methods=["POST"])
-@cross_origin()
+@cross_origin(origin='*',headers=['Content- Type','Authorization'])
 def grafica():
     data = request.get_json()
     xValues = data["xValues"]
@@ -63,7 +61,10 @@ def grafica():
     pesos = data["w"]
     ubicaciones = data["locations"]
     respuesta = distanciaPuntos(puntos, pesos, ubicaciones)
-    return respuesta
+    response_flask  = jsonify(respuesta)
+    response_flask.headers.add('Access-Control-Allow-Origin', '*')
+    return response_flask
+    
 
 
 

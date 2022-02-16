@@ -48,6 +48,7 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
   
 
 @app.route("/grafica", methods=["POST"])
+@cross_origin()
 def grafica():
     data = request.get_json()
     puntos = data["points"]
@@ -64,5 +65,5 @@ def grafica():
 
 
 if __name__ == "__main__":
-    app.run(port = 5000, debug = True)
+    app.run(port = 5000, debug = False)
 

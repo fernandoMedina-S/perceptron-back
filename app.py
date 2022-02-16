@@ -1,9 +1,10 @@
 import math
 from flask import Flask, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def distanciaPuntos(puntos, pesos, ubicaciones):
     distancias = {}
@@ -57,6 +58,7 @@ def after_request(response):
   return response 
 
 @app.route("/grafica", methods=["POST"])
+@cross_origin()
 def grafica():
     data = request.get_json()
     xValues = data["xValues"]

@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 def distanciaPuntos(puntos, pesos, ubicaciones):
@@ -18,7 +18,6 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
         if float(pesos["w1"]) or float(pesos["w2"])< 0:
             w1_negativo = True
 
-        #15 = .5x + 2x
         if float(pesos["w1"]) == 0 and float(pesos["w2"]) == 0:
             xRecta = 0
             division_entre_cero = True
@@ -32,7 +31,6 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
         print("X dada: " + str(float(elemento["offsetX"])) + " Y dada: " + str(float(elemento["offsetY"])))
         print("X: " + str(xRecta) + " Y: " + str(yRecta))
 
-        #and yRecta >= float(elemento["offsetY"])
         if division_entre_cero and yRecta >= float(elemento["offsetY"]):
             fuera = -1
 
@@ -42,9 +40,6 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
         elif w1_negativo and  yRecta <= float(elemento["offsetY"]):
             fuera = -1
 
-        
-        #(Ax + Bx + C / sqrt(A^2 + B^2))
-        # resultado = (float(pesos["w1"]) * float(elemento["offsetX"]) + float(pesos["w2"]) * float(elemento["offsetY"])) / (math.sqrt(math.pow(float(pesos["w1"]), 2) + math.pow(float(pesos["w2"]), 2)))
         objeto =  {"offsetX": elemento["offsetX"], "offsetY": elemento["offsetY"], "distancia": fuera, "ubicaciones": ubicaciones}
         distancias["{}".format(indice)] = objeto
         indice = indice + 1

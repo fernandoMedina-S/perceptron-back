@@ -1,5 +1,5 @@
 import math
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -55,7 +55,9 @@ def after_request(response):
   response.headers.set('Access-Control-Allow-Origin', '*')
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
   response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  return response 
+  response_flask  = jsonify(response)
+  response_flask.headers.add('Access-Control-Allow-Origin', '*')
+  return response_flask
 
 @app.route("/grafica", methods=["POST"])
 @cross_origin()

@@ -1,6 +1,6 @@
 import math
-from flask import Flask, request, jsonify, Response, make_response
-from flask_cors import CORS, cross_origin
+from flask import Flask, request, make_response
+from flask_cors import CORS
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -11,7 +11,6 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
     indice = 0
     division_entre_cero = False
     w1_negativo = False
-    w2_negativo = False
     
     for elemento in puntos:
         yRecta = float(pesos["w1"]) * float(elemento["offsetX"]) + float(pesos["w2"]) * float(elemento["offsetX"])

@@ -12,6 +12,7 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
     division_entre_cero = False
     w1_negativo = False
     w2_negativo = False
+    
     for elemento in puntos:
         yRecta = float(pesos["w1"]) * float(elemento["offsetX"]) + float(pesos["w2"]) * float(elemento["offsetX"])
 
@@ -48,7 +49,7 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
   
 
 @app.route("/grafica", methods=["POST"])
-@cross_origin()
+
 def grafica():
     data = request.get_json()
     puntos = data["points"]
@@ -65,5 +66,5 @@ def grafica():
 
 
 if __name__ == "__main__":
-    app.run(port = 5000, debug = False)
+    app.run(port = 5000, debug = True)
 

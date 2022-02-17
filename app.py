@@ -8,6 +8,7 @@ CORS(app)
 def distanciaPuntos(puntos, pesos, ubicaciones):
     distancias = {}
     indice = 0
+    
     division_entre_cero = False
     w1_negativo = False
     w2_negativo = False

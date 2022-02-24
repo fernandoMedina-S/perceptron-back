@@ -1,9 +1,10 @@
 import math
 from flask import Flask, request, make_response
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def distanciaPuntos(puntos, pesos, ubicaciones):
@@ -48,7 +49,7 @@ def distanciaPuntos(puntos, pesos, ubicaciones):
   
 
 @app.route("/grafica", methods=["POST"])
-
+@cross_origin()
 def grafica():
     data = request.get_json()
     puntos = data["points"]
@@ -56,8 +57,7 @@ def grafica():
     ubicaciones = data["locations"]
     respuesta = distanciaPuntos(puntos, pesos, ubicaciones)
     response_flask  = make_response(respuesta)
-    response_flask.headers['Access-Control-Allow-Origin'] = '*'
-    print(response_flask.headers['Access-Control-Allow-Origin'])
+    
     return response_flask
     
 
